@@ -1,0 +1,10 @@
+/* Remove visibility:hidden completely */
+.reveal-animation {
+    will-change: transform, opacity;
+}
+
+/* Add this new rule for better animation handling */
+.elementor-container.reveal-animation {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}

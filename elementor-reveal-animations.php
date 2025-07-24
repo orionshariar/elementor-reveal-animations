@@ -1,0 +1,240 @@
+<?php
+/**
+ * Plugin Name: Elementor Reveal Animations
+ * Description: Adds GAP-style reveal animations to Elementor containers
+ * Version: 1.0.0
+ * Author: Pixels71
+ * Author URI: https://pixels71.com
+ * Text Domain: elementor-reveal-animations
+ * License: GPL-3.0+
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
+ */
+
+defined('ABSPATH') || exit;
+
+final class Elementor_Reveal_Animations {
+
+    const VERSION = '1.0.0';
+    const MINIMUM_ELEMENTOR_VERSION = '3.0.0';
+
+    private static $_instance = null;
+
+    public static function instance() {
+        if (is_null(self::$_instance)) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
+    public function __construct() {
+        add_action('plugins_loaded', [$this, 'init']);
+    }
+
+    public function init() {
+        // Check if Elementor is installed and activated
+        if (!did_action('elementor/loaded')) {
+            add_action('admin_notices', [$this, 'admin_notice_missing_elementor']);
+            return;
+        }
+
+        // Check for required Elementor version
+        if (!version_compare(ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=')) {
+            add_action('admin_notices', [$this, 'admin_notice_minimum_elementor_version']);
+            return;
+        }
+
+        // Add Plugin actions
+        add_action('elementor/frontend/after_register_scripts', [$this, 'register_frontend_scripts']);
+        add_action('elementor/frontend/after_register_styles', [$this, 'register_frontend_styles']);
+        add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
+        add_action('elementor/element/container/section_layout/after_section_end', [$this, 'add_reveal_animation_section'], 10, 2);
+        add_action('elementor/frontend/container/before_render', [$this, 'before_container_render']);
+    }
+
+    public function admin_notice_missing_elementor() {
+        if (isset($_GET['activate'])) unset($_GET['activate']);
+        
+        $message = sprintf(
+            esc_html__('"%1$s" requires "%2$s" to be installed and activated.', 'elementor-reveal-animations'),
+            '<strong>' . esc_html__('Elementor Reveal Animations', 'elementor-reveal-animations') . '</strong>',
+            '<strong>' . esc_html__('Elementor', 'elementor-reveal-animations') . '</strong>'
+        );
+
+        printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+    }
+
+    public function admin_notice_minimum_elementor_version() {
+        if (isset($_GET['activate'])) unset($_GET['activate']);
+
+        $message = sprintf(
+            esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'elementor-reveal-animations'),
+            '<strong>' . esc_html__('Elementor Reveal Animations', 'elementor-reveal-animations') . '</strong>',
+            '<strong>' . esc_html__('Elementor', 'elementor-reveal-animations') . '</strong>',
+            self::MINIMUM_ELEMENTOR_VERSION
+        );
+
+        printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+    }
+
+    public function register_frontend_scripts() {
+        wp_register_script(
+            'gsap',
+            plugins_url('/assets/js/gsap.min.js', __FILE__),
+            [],
+            '3.11.4',
+            true
+        );
+
+        wp_register_script(
+            'scroll-trigger',
+            plugins_url('/assets/js/ScrollTrigger.min.js', __FILE__),
+            ['gsap'],
+            '3.11.4',
+            true
+        );
+
+        wp_register_script(
+            'elementor-reveal-animations-frontend',
+            plugins_url('/assets/js/frontend.js', __FILE__),
+            ['jquery', 'gsap', 'scroll-trigger', 'elementor-frontend'],
+            self::VERSION,
+            true
+        );
+    }
+
+    public function register_frontend_styles() {
+        wp_register_style(
+            'elementor-reveal-animations-frontend',
+            plugins_url('/assets/css/frontend.css', __FILE__),
+            [],
+            self::VERSION
+        );
+    }
+
+    public function init_controls() {
+        require_once(__DIR__ . '/includes/controls/reveal-animation.php');
+        $controls_manager = \Elementor\Plugin::$instance->controls_manager;
+        $controls_manager->register(new \Elementor_Reveal_Animation_Control());
+    }
+
+    public function add_reveal_animation_section($element, $args) {
+        $element->start_controls_section(
+            'reveal_animation_section',
+            [
+                'label' => __('Reveal Animation', 'elementor-reveal-animations'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $element->add_control(
+            'reveal_animation_enable',
+            [
+                'label' => __('Enable Reveal Animation', 'elementor-reveal-animations'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'return_value' => 'yes',
+                'default' => '',
+                'frontend_available' => true,
+            ]
+        );
+
+        $element->add_control(
+            'reveal_animation_type',
+            [
+                'label' => __('Animation Type', 'elementor-reveal-animations'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'fade',
+                'options' => [
+                    'fade' => __('Fade', 'elementor-reveal-animations'),
+                    'slide-up' => __('Slide Up', 'elementor-reveal-animations'),
+                    'slide-down' => __('Slide Down', 'elementor-reveal-animations'),
+                    'slide-left' => __('Slide Left', 'elementor-reveal-animations'),
+                    'slide-right' => __('Slide Right', 'elementor-reveal-animations'),
+                    'zoom-in' => __('Zoom In', 'elementor-reveal-animations'),
+                    'zoom-out' => __('Zoom Out', 'elementor-reveal-animations'),
+                ],
+                'condition' => [
+                    'reveal_animation_enable' => 'yes',
+                ],
+                'frontend_available' => true,
+            ]
+        );
+
+        $element->add_control(
+            'reveal_animation_duration',
+            [
+                'label' => __('Duration (s)', 'elementor-reveal-animations'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 1,
+                'min' => 0.1,
+                'max' => 5,
+                'step' => 0.1,
+                'condition' => [
+                    'reveal_animation_enable' => 'yes',
+                ],
+                'frontend_available' => true,
+            ]
+        );
+
+        $element->add_control(
+            'reveal_animation_delay',
+            [
+                'label' => __('Delay (s)', 'elementor-reveal-animations'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 0,
+                'min' => 0,
+                'max' => 5,
+                'step' => 0.1,
+                'condition' => [
+                    'reveal_animation_enable' => 'yes',
+                ],
+                'frontend_available' => true,
+            ]
+        );
+
+        $element->end_controls_section();
+    }
+    /*
+    public function before_container_render($element) {
+        $settings = $element->get_settings();
+        
+        if ('yes' === $settings['reveal_animation_enable']) {
+            $element->add_render_attribute('_wrapper', [
+                'class' => 'reveal-animation',
+                'data-reveal-animation' => 'yes',
+            ]);
+            
+            wp_enqueue_script('gsap');
+            wp_enqueue_script('scroll-trigger');
+            wp_enqueue_script('elementor-reveal-animations-frontend');
+            wp_enqueue_style('elementor-reveal-animations-frontend');
+        }
+    }
+    */
+    public function before_container_render($element) {
+        $settings = $element->get_settings();
+        
+        if ('yes' === $settings['reveal_animation_enable']) {
+            // Add only the necessary classes
+            $element->add_render_attribute('_wrapper', [
+                'class' => 'reveal-animation',
+                'data-reveal-type' => $settings['reveal_animation_type'] ?? 'fade'
+            ]);
+            
+            // Enqueue scripts
+            wp_enqueue_script('gsap');
+            wp_enqueue_script('scroll-trigger');
+            wp_enqueue_script('elementor-reveal-animations-frontend');
+            wp_enqueue_style('elementor-reveal-animations-frontend');
+            
+            // Add critical CSS to prevent FOUC
+            echo '<style>
+                .reveal-animation {
+                    opacity: 1 !important; /* Important to override GSAP */
+                    transform: none !important;
+                }
+            </style>';
+        }
+    }  
+}
+
+Elementor_Reveal_Animations::instance();
