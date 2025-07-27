@@ -1,1 +1,1 @@
-# elementor-reveal-animations
+# elementor-gsap-animations

@@ -1,18 +1,18 @@
-=== Elementor Reveal Animations ===
-Contributors: yourname
-Donate link: https://yourwebsite.com
-Tags: elementor, animation, reveal, scroll animation, gsap
+=== Elementor Gsap Animations ===
+Contributors: pixels71
+Donate link: https://pixels71.com
+Tags: elementor, animation, gsap, scroll animation, gsap
 Requires at least: 5.6
 Tested up to: 6.2
 Stable tag: 1.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Add beautiful GAP-style reveal animations to Elementor containers with scroll-triggered effects.
+Add beautiful GAP-style Gsap Animations to Elementor containers with scroll-triggered effects.
 
 == Description ==
 
-This plugin adds professional reveal animations to Elementor containers with scroll-triggered effects powered by GSAP.
+This plugin adds professional Gsap Animations to Elementor containers with scroll-triggered effects powered by GSAP.
 
 = Features =
 - Multiple animation types (fade, slide, zoom)
@@ -23,9 +23,9 @@ This plugin adds professional reveal animations to Elementor containers with scr
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/elementor-reveal-animations` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/elementor-gsap-animations` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Go to any Elementor container and find the new "Reveal Animation" tab in the style settings
+3. Go to any Elementor container and find the new "Gsap Animation" tab in the style settings
 
 == Frequently Asked Questions ==
 

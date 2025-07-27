@@ -1,5 +1,5 @@
 /**
- * Elementor Reveal Animations - Frontend Handler
+ * Elementor Gsap Animations - Frontend Handler
  * With comprehensive error handling and fallbacks
  */
 
@@ -7,56 +7,56 @@
     "use strict";
     
     // Debugging initialization
-    console.log("[Reveal Animations] Script loaded");
+    console.log("[Gsap Animations] Script loaded");
     
     // Main initialization function
-    function initializeRevealAnimations() {
+    function initializeGsapAnimations() {
         // Verify all required components are available
         if (typeof elementorFrontend === 'undefined') {
-            console.error("[Reveal Animations] elementorFrontend is not defined");
+            console.error("[Gsap Animations] elementorFrontend is not defined");
             return false;
         }
         
         if (typeof elementorFrontend.hooks === 'undefined') {
-            console.error("[Reveal Animations] elementorFrontend.hooks is not defined");
+            console.error("[Gsap Animations] elementorFrontend.hooks is not defined");
             return false;
         }
         
         if (typeof gsap === 'undefined') {
-            console.error("[Reveal Animations] GSAP is not loaded");
+            console.error("[Gsap Animations] GSAP is not loaded");
             return false;
         }
         
         if (typeof ScrollTrigger === 'undefined') {
-            console.error("[Reveal Animations] ScrollTrigger is not loaded");
+            console.error("[Gsap Animations] ScrollTrigger is not loaded");
             return false;
         }
         
-        console.log("[Reveal Animations] All dependencies verified");
+        console.log("[Gsap Animations] All dependencies verified");
         
         // Register ScrollTrigger plugin
         try {
             gsap.registerPlugin(ScrollTrigger);
-            console.log("[Reveal Animations] ScrollTrigger registered successfully");
+            console.log("[Gsap Animations] ScrollTrigger registered successfully");
         } catch (e) {
-            console.error("[Reveal Animations] Failed to register ScrollTrigger:", e);
+            console.error("[Gsap Animations] Failed to register ScrollTrigger:", e);
             return false;
         }
         
         // Define the animation handler
-        const RevealAnimationHandler = elementorModules.frontend.handlers.Base.extend({
+        const GsapAnimationHandler = elementorModules.frontend.handlers.Base.extend({
             onInit: function() {
-                console.log("[Reveal Animations] Handler initialized for element:", this.$element);
+                console.log("[Gsap Animations] Handler initialized for element:", this.$element);
                 elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
-                this.initRevealAnimation();
+                this.initGsapAnimation();
             },
             
-            initRevealAnimation: function() {
+            initGsapAnimation: function() {
                 const element = this.$element[0];
                 const settings = this.getElementSettings();
                 
-                if ('yes' !== settings.reveal_animation_enable) {
-                    console.log("[Reveal Animations] Animation not enabled for this element");
+                if ('yes' !== settings.gsap_animation_enable) {
+                    console.log("[Gsap Animations] Animation not enabled for this element");
                     return;
                 }
                 
@@ -68,14 +68,14 @@
                 const initialState = { opacity: 0 };
                 const animationVars = {
                     opacity: 1,
-                    duration: parseFloat(settings.reveal_animation_duration) || 1,
-                    delay: parseFloat(settings.reveal_animation_delay) || 0,
+                    duration: parseFloat(settings.gsap_animation_duration) || 1,
+                    delay: parseFloat(settings.gsap_animation_delay) || 0,
                     ease: "power2.out",
                     overwrite: "auto"
                 };
                 
                 // Configure based on animation type
-                switch(settings.reveal_animation_type) {
+                switch(settings.gsap_animation_type) {
                     case 'slide-up':
                         initialState.y = '50px';
                         animationVars.y = '0px';
@@ -114,7 +114,7 @@
                     markers: true
                 });
                 
-                console.log("[Reveal Animations] Animation setup complete for element:", element);
+                console.log("[Gsap Animations] Animation setup complete for element:", element);
             }
         });
         
@@ -123,13 +123,13 @@
             elementorFrontend.hooks.addAction(
                 'frontend/element_ready/container.default', 
                 function(scope) {
-                    new RevealAnimationHandler({ $element: $(scope) });
+                    new GsapAnimationHandler({ $element: $(scope) });
                 }
             );
-            console.log("[Reveal Animations] Handler registered successfully");
+            console.log("[Gsap Animations] Handler registered successfully");
             return true;
         } catch (e) {
-            console.error("[Reveal Animations] Failed to register handler:", e);
+            console.error("[Gsap Animations] Failed to register handler:", e);
             return false;
         }
     }
@@ -137,26 +137,26 @@
     // Attempt initialization when Elementor is ready
     function setupElementorIntegration() {
         if (window.elementorFrontend && window.elementorFrontend.hooks) {
-            console.log("[Reveal Animations] Elementor already loaded, initializing directly");
-            initializeRevealAnimations();
+            console.log("[Gsap Animations] Elementor already loaded, initializing directly");
+            initializeGsapAnimations();
         } else {
-            console.log("[Reveal Animations] Waiting for Elementor to initialize");
+            console.log("[Gsap Animations] Waiting for Elementor to initialize");
             $(window).on('elementor/frontend/init', function() {
-                console.log("[Reveal Animations] Elementor frontend init received");
-                initializeRevealAnimations();
+                console.log("[Gsap Animations] Elementor frontend init received");
+                initializeGsapAnimations();
             });
         }
     }
     
     // Start the integration when jQuery is ready
     $(function() {
-        console.log("[Reveal Animations] DOM ready, starting setup");
+        console.log("[Gsap Animations] DOM ready, starting setup");
         setupElementorIntegration();
         
         // Fallback check in case Elementor doesn't fire the event
         setTimeout(function() {
-            if (!window.revealAnimationsInitialized) {
-                console.log("[Reveal Animations] Fallback initialization check");
+            if (!window.gsapAnimationsInitialized) {
+                console.log("[Gsap Animations] Fallback initialization check");
                 setupElementorIntegration();
             }
         }, 3000);
