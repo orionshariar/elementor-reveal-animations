@@ -17,13 +17,9 @@ class Elementor_Gsap_Animation_Control extends \Elementor\Base_Control {
         return [
             'label' => __('Gsap Animation', 'elementor-gsap-animations'),
             'options' => [
-                'fade' => __('Fade', 'elementor-gsap-animations'),
-                'slide-up' => __('Slide Up', 'elementor-gsap-animations'),
-                'slide-down' => __('Slide Down', 'elementor-gsap-animations'),
-                'slide-left' => __('Slide Left', 'elementor-gsap-animations'),
-                'slide-right' => __('Slide Right', 'elementor-gsap-animations'),
-                'zoom-in' => __('Zoom In', 'elementor-gsap-animations'),
-                'zoom-out' => __('Zoom Out', 'elementor-gsap-animations'),
+                'reveal-me' => __('Reveal Me', 'elementor-gsap-animations'),
+                'reveal-text' => __('Reveal Text', 'elementor-gsap-animations'),
+                'text-appear' => __('Text Appear', 'elementor-gsap-animations'),
             ],
             'separator' => 'before',
         ];
