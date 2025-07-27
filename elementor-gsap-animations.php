@@ -159,38 +159,6 @@ final class Elementor_Gsap_Animations {
             ]
         );
 
-        $element->add_control(
-            'gsap_animation_duration',
-            [
-                'label' => __('Duration (s)', 'elementor-gsap-animations'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 1,
-                'min' => 0.1,
-                'max' => 5,
-                'step' => 0.1,
-                'condition' => [
-                    'gsap_animation_enable' => 'yes',
-                ],
-                'frontend_available' => true,
-            ]
-        );
-
-        $element->add_control(
-            'gsap_animation_delay',
-            [
-                'label' => __('Delay (s)', 'elementor-gsap-animations'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 0,
-                'min' => 0,
-                'max' => 5,
-                'step' => 0.1,
-                'condition' => [
-                    'gsap_animation_enable' => 'yes',
-                ],
-                'frontend_available' => true,
-            ]
-        );
-
         $element->end_controls_section();
     }
 
