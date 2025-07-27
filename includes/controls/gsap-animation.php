@@ -17,9 +17,9 @@ class Elementor_Gsap_Animation_Control extends \Elementor\Base_Control {
         return [
             'label' => __('Gsap Animation', 'elementor-gsap-animations'),
             'options' => [
-                'reveal-me' => __('Reveal Me', 'elementor-gsap-animations'),
-                'reveal-text' => __('Reveal Text', 'elementor-gsap-animations'),
-                'text-appear' => __('Text Appear', 'elementor-gsap-animations'),
+                'gsap-reveal-me' => __('Reveal Me', 'elementor-gsap-animations'),
+                'gsap-reveal-text' => __('Reveal Text', 'elementor-gsap-animations'),
+                'gsap-text-appear' => __('Text Appear', 'elementor-gsap-animations'),
             ],
             'separator' => 'before',
         ];

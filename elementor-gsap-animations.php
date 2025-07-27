@@ -52,7 +52,7 @@ final class Elementor_Gsap_Animations {
         add_action('elementor/frontend/container/before_render', [$this, 'before_container_render']);
         // widget section
         add_action('elementor/element/common/_section_style/after_section_end', [$this, 'add_gsap_animation_section'], 10, 2);
-        add_action('elementor/widget/before_render_content', [$this, 'before_container_render']);
+        add_action('elementor/frontend/widget/before_render', [$this, 'before_widget_render']);
     }
 
     public function admin_notice_missing_elementor() {
@@ -99,7 +99,7 @@ final class Elementor_Gsap_Animations {
 
         wp_register_script(
             'elementor-gsap-animations-frontend',
-            plugins_url('/assets/js/frontend.js', __FILE__),
+            plugins_url('/assets/js/gsap-frontend.js', __FILE__),
             ['jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'],
             self::VERSION,
             true
@@ -109,7 +109,7 @@ final class Elementor_Gsap_Animations {
     public function register_frontend_styles() {
         wp_register_style(
             'elementor-gsap-animations-frontend',
-            plugins_url('/assets/css/frontend.css', __FILE__),
+            plugins_url('/assets/css/gsap-frontend.css', __FILE__),
             [],
             self::VERSION
         );
@@ -148,9 +148,9 @@ final class Elementor_Gsap_Animations {
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '',
                 'options' => [
-                    'reveal-me' => __('Reveal Me', 'elementor-gsap-animations'),
-                    'reveal-text' => __('Reveal Text', 'elementor-gsap-animations'),
-                    'text-appear' => __('Text Appear', 'elementor-gsap-animations'),
+                    'gsap-reveal-me' => __('Reveal Me', 'elementor-gsap-animations'),
+                    'gsap-reveal-text' => __('Reveal Text', 'elementor-gsap-animations'),
+                    'gsap-text-appear' => __('Text Appear', 'elementor-gsap-animations'),
                 ],
                 'condition' => [
                     'gsap_animation_enable' => 'yes',
@@ -159,11 +159,46 @@ final class Elementor_Gsap_Animations {
             ]
         );
 
+
+        $element->add_control(
+            'gsap_animation_duration',
+            [
+                'label' => __('Duration (s)', 'elementor-gsap-animations'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 1,
+                'min' => 0.1,
+                'max' => 5,
+                'step' => 0.1,
+                'condition' => [
+                    'gsap_animation_enable' => 'yes',
+                ],
+                'frontend_available' => true,
+            ]
+        );
+
+        $element->add_control(
+            'gsap_animation_delay',
+            [
+                'label' => __('Delay (s)', 'elementor-gsap-animations'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 0,
+                'min' => 0,
+                'max' => 5,
+                'step' => 0.1,
+                'condition' => [
+                    'gsap_animation_enable' => 'yes',
+                ],
+                'frontend_available' => true,
+            ]
+        );        
+
         $element->end_controls_section();
     }
 
     public function before_container_render($element) {
         $settings = $element->get_settings();
+        // $widgetName = $element->get_name();
+        // echo "<pre>"; print_r($widgetName); echo "</pre>";
         
         if ('yes' === $settings['gsap_animation_enable']) {
             // Add only the necessary classes
@@ -179,6 +214,10 @@ final class Elementor_Gsap_Animations {
             wp_enqueue_style('elementor-gsap-animations-frontend');
         }
     }  
+
+    public function before_widget_render($widget) {
+        $this->before_container_render($widget);
+    }
 }
 
 Elementor_Gsap_Animations::instance();

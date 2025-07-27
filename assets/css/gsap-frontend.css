@@ -1,0 +1,31 @@
+/* Remove visibility:hidden completely */
+.gsap-animation {
+    will-change: transform, opacity;
+}
+
+/* Add this new rule for better animation handling */
+.elementor-container.gsap-animation {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+
+.gsap-text-appear .line,
+.gsap-text-appear-2 .line {
+    overflow: hidden;
+    color: inherit;
+}
+
+.gsap-text-appear .line span,
+.gsap-text-appear-2 .line span {
+    color: inherit;
+}
+
+.gsap-text-appear .line .word,
+.gsap-text-appear-2 .line .word {
+    color: inherit;
+}
+
+.gsap-reveal-me {
+    overflow: hidden;
+}
