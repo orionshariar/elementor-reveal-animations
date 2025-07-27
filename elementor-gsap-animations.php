@@ -6,6 +6,7 @@
  * Author: Pixels71
  * Author URI: https://pixels71.com
  * Text Domain: elementor-gsap-animations
+ * Requires Plugins: elementor
  * License: GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  */
