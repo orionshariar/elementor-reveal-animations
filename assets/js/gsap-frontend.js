@@ -1,113 +1,185 @@
-// ===============================
-// Animations
-// ===============================
-const AnimationsGsap = {
-    initGsapTextReveal() {
-        const splitTypes = document.querySelectorAll(".gsap-reveal-text");
-        splitTypes.forEach((char) => {
-            const text = new SplitType(char, {
-                types: "chars"
-            });
-            gsap.from(text.chars, {
-                scrollTrigger: {
-                    trigger: char,
-                    start: "top 34%",
-                    end: "top -10%",
-                    scrub: true,
-                    pin: ".about",
-                    pinSpacing: true,
-                },
-                opacity: 0.1,
-                stagger: 5,
+(function ($, elementor) {
+    "use strict";
 
-                ease: "back.out",
-            });
-        });
-    },
+    var GsapAnimation = {
 
-    initGsapSectionTitles() {
-        const titles = document.querySelectorAll(".gsap-text-appear");
-        titles.forEach((title) => {
-            const titleText = new SplitType(title, {
-                types: "lines"
-            });
-            titleText.lines.forEach((lines) => {
-                const lineText = new SplitType(lines, {
-                    types: "words"
+        init: function () {
+            elementor.hooks.addAction('frontend/element_ready/container', GsapAnimation.initGsapTextReveal);
+            elementor.hooks.addAction('frontend/element_ready/container', GsapAnimation.initGsapSectionTitles);
+            elementor.hooks.addAction('frontend/element_ready/container', GsapAnimation.initGsapSectionTitles2);
+            elementor.hooks.addAction('frontend/element_ready/container', GsapAnimation.initGsapRevealElements);
+        },
+
+        initGsapTextReveal: function($scope) {
+            const textElements = $scope.find(".gsap-reveal-text");
+            
+            textElements.each(function() {
+                const element = $(this);
+                let animationDuration = 0.7;
+                let animationDelay = 0;
+                let staggerAmount = 5;
+                let opacityStart = 0.1;
+                
+                const elementSettings = element.data("settings");
+                if (typeof elementSettings !== 'undefined' && elementSettings.gsap_animation_enable == "yes") {
+                    animationDuration = elementSettings.gsap_animation_duration;
+                    animationDelay = elementSettings.gsap_animation_delay;
+                    staggerAmount = elementSettings.gsap_animation_stagger;
+                    opacityStart = elementSettings.gsap_animation_opacity;
+                }
+
+                const text = new SplitType(element[0], {
+                    types: "chars"
                 });
-                gsap.from(lineText.words, {
+
+                gsap.from(text.chars, {
                     scrollTrigger: {
-                        trigger: title,
-                        start: "top 90%",
-                        end: "top 30%",
-                        scrub: false,
+                        trigger: element,
+                        start: "top 34%",
+                        end: "top -10%",
+                        scrub: true,
+                        pin: ".about",
+                        pinSpacing: true,
                     },
-                    y: 120,
-                    rotation: 21,
-                    stagger: 0.02,
-                    duration: 0.7,
-                    ease: "power2.out",
+                    opacity: opacityStart,
+                    y: 50,
+                    stagger: staggerAmount,
+                    duration: animationDuration,
+                    delay: animationDelay,
+                    ease: "back.out",
                 });
             });
-        });
-    },
+        },        
 
-    initGsapSectionTitles2() {
-        const titles = document.querySelectorAll(".gsap-text-appear-2");
-        titles.forEach((title) => {
-            const titleText = new SplitType(title, {
-                types: "lines"
-            });
-            titleText.lines.forEach((lines) => {
-                const lineText = new SplitType(lines, {
-                    types: "words"
+        initGsapSectionTitles: function($scope) {
+            const titles = $scope.find(".gsap-text-appear");
+            
+            titles.each(function() {
+                const title = $(this);
+                let animationDuration = 0.7;
+                let animationDelay = 0;
+                let staggerAmount = 0.02;
+                
+                const titleSettings = title.data("settings");
+                if (typeof titleSettings !== 'undefined' && titleSettings.gsap_animation_enable == "yes") {
+                    animationDuration = titleSettings.gsap_animation_duration;
+                    animationDelay = titleSettings.gsap_animation_delay;
+                    staggerAmount = titleSettings.gsap_animation_stagger;
+                }
+
+                const titleText = new SplitType(title[0], {
+                    types: "lines"
                 });
-                gsap.from(lineText.words, {
-                    scrollTrigger: {
-                        trigger: title,
-                        start: "top 90%",
-                        end: "top 30%",
-                        scrub: false,
+                
+                titleText.lines.forEach((lines) => {
+                    const lineText = new SplitType(lines, {
+                        types: "words"
+                    });
+                    
+                    gsap.from(lineText.words, {
+                        y: 120,
+                        rotation: 21,
+                        opacity: 0,
+                        stagger: staggerAmount,
+                        duration: animationDuration,
+                        delay: animationDelay,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: title,
+                            start: "top 90%",
+                            end: "top 30%",
+                            scrub: false
+                        }
+                    });
+                });
+            });
+        },
+
+        initGsapSectionTitles2: function($scope) {
+            const titles = $scope.find(".gsap-text-appear-2");
+            
+            titles.each(function() {
+                const title = $(this);
+                let animationDuration = 0.7;
+                let animationDelay = 0;
+                let staggerAmount = 0.02;
+                
+                const titleSettings = title.data("settings");
+                if (typeof titleSettings !== 'undefined' && titleSettings.gsap_animation_enable == "yes") {
+                    animationDuration = titleSettings.gsap_animation_duration;
+                    animationDelay = titleSettings.gsap_animation_delay;
+                    staggerAmount = titleSettings.gsap_animation_stagger;
+                }
+
+                const titleText = new SplitType(title[0], {
+                    types: "lines"
+                });
+                
+                titleText.lines.forEach((lines) => {
+                    const lineText = new SplitType(lines, {
+                        types: "words"
+                    });
+                    
+                    gsap.from(lineText.words, {
+                        y: 120,
+                        rotation: 21,
+                        opacity: 0,
+                        stagger: staggerAmount,
+                        duration: animationDuration,
+                        delay: animationDelay,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: title,
+                            start: "top 90%",
+                            end: "top 30%",
+                            scrub: false
+                        }
+                    });
+                });
+            });
+        },        
+
+        initGsapRevealElements: function($scope) {
+            const wrappers = $scope.find(".gsap-reveal-me");
+            
+            wrappers.each(function() {
+                const wrapper = $(this);
+                let animationDuration = 0.9;
+                let animationDelay = 0;
+                
+                const wrapperSettings = wrapper.data("settings");
+                if (typeof wrapperSettings !== 'undefined' && wrapperSettings.gsap_animation_enable == "yes") {
+                    animationDuration = wrapperSettings.gsap_animation_duration;
+                    // animationDuration = parseFloat(wrapperSettings.gsap_animation_duration.toFixed(2));
+                    animationDelay = wrapperSettings.gsap_animation_delay;
+                }
+
+                gsap.fromTo(wrapper, 
+                    {
+                        opacity: 0,
+                        y: 95,
+                        rotation: 2,
+                        filter: "blur(10px)"
                     },
-                    y: 120,
-                    rotation: 21,
-                    stagger: 0.02,
-                    duration: 0.7,
-                    ease: "power2.out",
-                });
+                    {
+                        opacity: 1,
+                        y: 0,
+                        rotation: 0,
+                        filter: "none",
+                        duration: animationDuration,
+                        delay: animationDelay,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: wrapper,
+                            start: "top 90%",
+                            end: "top 50%",
+                            scrub: false
+                        }
+                    }
+                );
             });
-        });
-    },
+        }
 
-    initGsapRevealElements() {
-        const elements = document.querySelectorAll(".gsap-reveal-me");
-        elements.forEach((elem) => {
-            gsap.from(elem, {
-                scrollTrigger: {
-                    trigger: elem,
-                    start: "top 90%",
-                    end: "top 50%",
-                    scrub: false,
-                },
-                opacity: 0,
-                y: 95,
-                rotation: 2,
-                filter: "blur(10px)",
-                duration: 0.9,
-                stagger: 0.1,
-                ease: "power2.out",
-            });
-        });
-    },
-};
-
-// ===============================
-// Initialization
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-    // Initialize animations
-    AnimationsGsap.initGsapSectionTitles();
-    AnimationsGsap.initGsapSectionTitles2();
-    AnimationsGsap.initGsapRevealElements();
-    AnimationsGsap.initGsapTextReveal();
-});
+    };
+    $(window).on('elementor/frontend/init', GsapAnimation.init);
+}(jQuery, window.elementorFrontend));

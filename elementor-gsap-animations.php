@@ -45,7 +45,8 @@ final class Elementor_Gsap_Animations {
         }
 
         // Add Plugin actions
-        add_action('elementor/frontend/after_register_scripts', [$this, 'register_frontend_scripts']);
+        // add_action('elementor/frontend/after_register_scripts', [$this, 'register_frontend_scripts']);
+        add_action('elementor/frontend/before_enqueue_scripts', [$this, 'register_frontend_scripts']);
         add_action('elementor/frontend/after_register_styles', [$this, 'register_frontend_styles']);
         add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
         add_action('elementor/element/container/section_layout/after_section_end', [$this, 'add_gsap_animation_section'], 10, 2);
@@ -81,29 +82,16 @@ final class Elementor_Gsap_Animations {
     }
 
     public function register_frontend_scripts() {
+
         // wp_register_script(
-        //     'gsap',
-        //     plugins_url('/assets/js/gsap.min.js', __FILE__),
-        //     [],
-        //     '3.11.4',
+        //     'elementor-gsap-animations-frontend',
+        //     plugins_url('/assets/js/gsap-frontend.js', __FILE__),
+        //     ['jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'],
+        //     self::VERSION,
         //     true
         // );
 
-        // wp_register_script(
-        //     'scroll-trigger',
-        //     plugins_url('/assets/js/ScrollTrigger.min.js', __FILE__),
-        //     ['gsap'],
-        //     '3.11.4',
-        //     true
-        // );
-
-        wp_register_script(
-            'elementor-gsap-animations-frontend',
-            plugins_url('/assets/js/gsap-frontend.js', __FILE__),
-            ['jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'],
-            self::VERSION,
-            true
-        );
+        wp_enqueue_script( 'elementor-gsap-animations-frontend', plugins_url('/assets/js/gsap-frontend.js', __FILE__), array('jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'), self::VERSION, true );
     }
 
     public function register_frontend_styles() {
@@ -165,7 +153,7 @@ final class Elementor_Gsap_Animations {
             [
                 'label' => __('Duration (s)', 'elementor-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 1,
+                'default' => 0.9,
                 'min' => 0.1,
                 'max' => 5,
                 'step' => 0.1,

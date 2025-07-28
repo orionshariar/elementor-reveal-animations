@@ -1,14 +1,14 @@
-/* Remove visibility:hidden completely */
-.gsap-animation {
-    will-change: transform, opacity;
-}
-
-/* Add this new rule for better animation handling */
-.elementor-container.gsap-animation {
+/* Fix for e-con containers */
+.e-con.gsap-reveal-me {
     transform-style: preserve-3d;
     backface-visibility: hidden;
+    will-change: transform, opacity, filter; /* Optimizes for animation */
 }
 
+/* Optional: Improve blur performance */
+.e-con.gsap-reveal-me {
+    transform: translateZ(0);
+}
 
 .gsap-text-appear .line,
 .gsap-text-appear-2 .line {
