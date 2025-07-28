@@ -52,7 +52,8 @@
         },        
 
         initGsapSectionTitles: function($scope) {
-            const titles = $scope.find(".gsap-text-appear");
+            // Onle for text-appear animation we have set the trigger event to "elementor-widget-container"
+            const titles = $scope.find(".gsap-text-appear .elementor-widget-container");
             
             titles.each(function() {
                 const title = $(this);
@@ -60,7 +61,7 @@
                 let animationDelay = 0;
                 let staggerAmount = 0.02;
                 
-                const titleSettings = title.data("settings");
+                const titleSettings = title.parent().data("settings"); // As we have set the parent to "elementor-widget-container" and data-seetings appending in parent div
                 if (typeof titleSettings !== 'undefined' && titleSettings.gsap_animation_enable == "yes") {
                     animationDuration = titleSettings.gsap_animation_duration;
                     animationDelay = titleSettings.gsap_animation_delay;

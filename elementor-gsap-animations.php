@@ -182,7 +182,42 @@ final class Elementor_Gsap_Animations {
 
         $element->end_controls_section();
     }
+    /*
+    public function before_container_render($element) {
+        $settings = $element->get_settings();
+        $widgetName = $element->get_name();
+        
+        if ('yes' === $settings['gsap_animation_enable']) {
+            $animation_data = [
+                'gsap_animation_enable' => $settings['gsap_animation_enable'] ?? '',
+                'gsap_animation_type' => $settings['gsap_animation_type'] ?? '',
+                'gsap_animation_duration' => $settings['gsap_animation_duration'] ?? 0.9,
+                'gsap_animation_delay' => $settings['gsap_animation_delay'] ?? 0,
+            ];
 
+            if ('heading' === $widgetName) {
+                // For heading widget, add classes and data to the heading tag
+                $element->add_render_attribute('title', [
+                    'class' => 'gsap-animation ' . ($settings['gsap_animation_type'] ?? ''),
+                    'data-gsap-type' => $settings['gsap_animation_type'] ?? '',
+                    'data-settings' => wp_json_encode($animation_data)
+                ]);
+            } else {
+                // For other widgets, add classes and data to the wrapper
+                $element->add_render_attribute('_wrapper', [
+                    'class' => 'gsap-animation ' . ($settings['gsap_animation_type'] ?? ''),
+                    'data-gsap-type' => $settings['gsap_animation_type'] ?? '',
+                    'data-settings' => wp_json_encode($animation_data)
+                ]);
+            }
+            
+            // Enqueue scripts
+            wp_enqueue_script('elementor-gsap-animations-frontend');
+            wp_enqueue_style('elementor-gsap-animations-frontend');
+        }
+    } 
+    */   
+    
     public function before_container_render($element) {
         $settings = $element->get_settings();
         // $widgetName = $element->get_name();
@@ -201,7 +236,7 @@ final class Elementor_Gsap_Animations {
             wp_enqueue_script('elementor-gsap-animations-frontend');
             wp_enqueue_style('elementor-gsap-animations-frontend');
         }
-    }  
+    }
 
     public function before_widget_render($widget) {
         $this->before_container_render($widget);
