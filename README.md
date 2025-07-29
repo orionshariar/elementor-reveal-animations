@@ -1,1 +1,1 @@
-# elementor-gsap-animations
+# plg-gsap-animations

@@ -1,9 +1,9 @@
-=== Elementor Gsap Animations ===
+=== Gsap Animations for Elementor ===
 Contributors: pixels71
 Donate link: https://pixels71.com
 Tags: elementor, animation, gsap, scroll animation, gsap
 Requires at least: 5.6
-Tested up to: 6.2
+Tested up to: 6.8
 Stable tag: 1.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -23,7 +23,7 @@ This plugin adds professional Gsap Animations to Elementor containers with scrol
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/elementor-gsap-animations` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/plg-gsap-animations` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Go to any Elementor container and find the new "Gsap Animation" tab in the style settings
 

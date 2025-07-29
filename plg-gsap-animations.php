@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Elementor Gsap Animations
- * Description: Adds GAP-style Gsap Animations to Elementor containers
+ * Plugin Name: Gsap Animations for Elementor
+ * Description: Adds GAP-style Gsap Animations to Elementor containers & Widgets
  * Version: 1.0.0
  * Author: Pixels71
  * Author URI: https://pixels71.com
- * Text Domain: elementor-gsap-animations
+ * Text Domain: plg-gsap-animations
  * Requires Plugins: elementor
  * License: GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -57,46 +57,50 @@ final class Elementor_Gsap_Animations {
     }
 
     public function admin_notice_missing_elementor() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['activate'])) unset($_GET['activate']);
         
         $message = sprintf(
-            esc_html__('"%1$s" requires "%2$s" to be installed and activated.', 'elementor-gsap-animations'),
-            '<strong>' . esc_html__('Elementor Gsap Animations', 'elementor-gsap-animations') . '</strong>',
-            '<strong>' . esc_html__('Elementor', 'elementor-gsap-animations') . '</strong>'
+            /* translators: 1: Elementor GSAP Animation: Elementor */
+            esc_html__('"%1$s" requires "%2$s" to be installed and activated.', 'plg-gsap-animations'),
+            '<strong>' . esc_html__('Elementor Gsap Animations', 'plg-gsap-animations') . '</strong>',
+            '<strong>' . esc_html__('Elementor', 'plg-gsap-animations') . '</strong>'
         );
 
-        printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+        printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', wp_kses_post($message));
     }
 
     public function admin_notice_minimum_elementor_version() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['activate'])) unset($_GET['activate']);
 
         $message = sprintf(
-            esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'elementor-gsap-animations'),
-            '<strong>' . esc_html__('Elementor Gsap Animations', 'elementor-gsap-animations') . '</strong>',
-            '<strong>' . esc_html__('Elementor', 'elementor-gsap-animations') . '</strong>',
+            /* translators: 1: Elementor GSAP Animation: Elementor 3: Required Elementor version */
+            esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'plg-gsap-animations'),
+            '<strong>' . esc_html__('Elementor Gsap Animations', 'plg-gsap-animations') . '</strong>',
+            '<strong>' . esc_html__('Elementor', 'plg-gsap-animations') . '</strong>',
             self::MINIMUM_ELEMENTOR_VERSION
         );
 
-        printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+        printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', wp_kses_post($message));
     }
 
     public function register_frontend_scripts() {
 
         // wp_register_script(
-        //     'elementor-gsap-animations-frontend',
+        //     'plg-gsap-animations-frontend',
         //     plugins_url('/assets/js/gsap-frontend.js', __FILE__),
         //     ['jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'],
         //     self::VERSION,
         //     true
         // );
 
-        wp_enqueue_script( 'elementor-gsap-animations-frontend', plugins_url('/assets/js/gsap-frontend.js', __FILE__), array('jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'), self::VERSION, true );
+        wp_enqueue_script( 'plg-gsap-animations-frontend', plugins_url('/assets/js/gsap-frontend.js', __FILE__), array('jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'), self::VERSION, true );
     }
 
     public function register_frontend_styles() {
         wp_register_style(
-            'elementor-gsap-animations-frontend',
+            'plg-gsap-animations-frontend',
             plugins_url('/assets/css/gsap-frontend.css', __FILE__),
             [],
             self::VERSION
@@ -113,15 +117,15 @@ final class Elementor_Gsap_Animations {
         $element->start_controls_section(
             'gsap_animation_section',
             [
-                'label' => __('Gsap Animation', 'elementor-gsap-animations'),
-                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+                'label' => __('Gsap Animation', 'plg-gsap-animations'),
+                'tab' => \Elementor\Controls_Manager::TAB_ADVANCED,
             ]
         );
 
         $element->add_control(
             'gsap_animation_enable',
             [
-                'label' => __('Enable Gsap Animation', 'elementor-gsap-animations'),
+                'label' => __('Enable Gsap Animation', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'return_value' => 'yes',
                 'default' => '',
@@ -132,13 +136,13 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_type',
             [
-                'label' => __('Animation Type', 'elementor-gsap-animations'),
+                'label' => __('Animation Type', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '',
                 'options' => [
-                    'gsap-reveal-me' => __('Reveal Me', 'elementor-gsap-animations'),
-                    'gsap-reveal-text' => __('Reveal Text', 'elementor-gsap-animations'),
-                    'gsap-text-appear' => __('Text Appear', 'elementor-gsap-animations'),
+                    'gsap-reveal-me' => __('Reveal Me', 'plg-gsap-animations'),
+                    'gsap-reveal-text' => __('Reveal Text', 'plg-gsap-animations'),
+                    'gsap-text-appear' => __('Text Appear', 'plg-gsap-animations'),
                 ],
                 'condition' => [
                     'gsap_animation_enable' => 'yes',
@@ -151,7 +155,7 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_duration',
             [
-                'label' => __('Duration (s)', 'elementor-gsap-animations'),
+                'label' => __('Duration (s)', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 0.9,
                 'min' => 0.1,
@@ -167,7 +171,7 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_delay',
             [
-                'label' => __('Delay (s)', 'elementor-gsap-animations'),
+                'label' => __('Delay (s)', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 0,
                 'min' => 0,
@@ -212,8 +216,8 @@ final class Elementor_Gsap_Animations {
             }
             
             // Enqueue scripts
-            wp_enqueue_script('elementor-gsap-animations-frontend');
-            wp_enqueue_style('elementor-gsap-animations-frontend');
+            wp_enqueue_script('plg-gsap-animations-frontend');
+            wp_enqueue_style('plg-gsap-animations-frontend');
         }
     } 
     */   
@@ -233,8 +237,8 @@ final class Elementor_Gsap_Animations {
             // Enqueue scripts
             // wp_enqueue_script('gsap');
             // wp_enqueue_script('scroll-trigger');
-            wp_enqueue_script('elementor-gsap-animations-frontend');
-            wp_enqueue_style('elementor-gsap-animations-frontend');
+            wp_enqueue_script('plg-gsap-animations-frontend');
+            wp_enqueue_style('plg-gsap-animations-frontend');
         }
     }
 
