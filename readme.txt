@@ -15,7 +15,7 @@ Add beautiful GAP-style Gsap Animations to Elementor containers with scroll-trig
 This plugin adds professional Gsap Animations to Elementor containers with scroll-triggered effects powered by GSAP.
 
 = Features =
-- Multiple animation types (fade, slide, zoom)
+- Multiple animation types (reveal me, text appear, reveal text)
 - Customizable duration and delay
 - Scroll-triggered animations
 - Lightweight and performant

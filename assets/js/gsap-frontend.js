@@ -151,7 +151,6 @@
                 const wrapperSettings = wrapper.data("settings");
                 if (typeof wrapperSettings !== 'undefined' && wrapperSettings.gsap_animation_enable == "yes") {
                     animationDuration = wrapperSettings.gsap_animation_duration;
-                    // animationDuration = parseFloat(wrapperSettings.gsap_animation_duration.toFixed(2));
                     animationDelay = wrapperSettings.gsap_animation_delay;
                 }
 

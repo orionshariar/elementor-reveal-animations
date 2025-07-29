@@ -45,7 +45,6 @@ final class Elementor_Gsap_Animations {
         }
 
         // Add Plugin actions
-        // add_action('elementor/frontend/after_register_scripts', [$this, 'register_frontend_scripts']);
         add_action('elementor/frontend/before_enqueue_scripts', [$this, 'register_frontend_scripts']);
         add_action('elementor/frontend/after_register_styles', [$this, 'register_frontend_styles']);
         add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
@@ -86,15 +85,6 @@ final class Elementor_Gsap_Animations {
     }
 
     public function register_frontend_scripts() {
-
-        // wp_register_script(
-        //     'plg-gsap-animations-frontend',
-        //     plugins_url('/assets/js/gsap-frontend.js', __FILE__),
-        //     ['jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'],
-        //     self::VERSION,
-        //     true
-        // );
-
         wp_enqueue_script( 'plg-gsap-animations-frontend', plugins_url('/assets/js/gsap-frontend.js', __FILE__), array('jquery', 'gsap', 'ScrollTrigger', 'elementor-frontend'), self::VERSION, true );
     }
 
@@ -151,7 +141,6 @@ final class Elementor_Gsap_Animations {
             ]
         );
 
-
         $element->add_control(
             'gsap_animation_duration',
             [
@@ -186,46 +175,9 @@ final class Elementor_Gsap_Animations {
 
         $element->end_controls_section();
     }
-    /*
-    public function before_container_render($element) {
-        $settings = $element->get_settings();
-        $widgetName = $element->get_name();
-        
-        if ('yes' === $settings['gsap_animation_enable']) {
-            $animation_data = [
-                'gsap_animation_enable' => $settings['gsap_animation_enable'] ?? '',
-                'gsap_animation_type' => $settings['gsap_animation_type'] ?? '',
-                'gsap_animation_duration' => $settings['gsap_animation_duration'] ?? 0.9,
-                'gsap_animation_delay' => $settings['gsap_animation_delay'] ?? 0,
-            ];
-
-            if ('heading' === $widgetName) {
-                // For heading widget, add classes and data to the heading tag
-                $element->add_render_attribute('title', [
-                    'class' => 'gsap-animation ' . ($settings['gsap_animation_type'] ?? ''),
-                    'data-gsap-type' => $settings['gsap_animation_type'] ?? '',
-                    'data-settings' => wp_json_encode($animation_data)
-                ]);
-            } else {
-                // For other widgets, add classes and data to the wrapper
-                $element->add_render_attribute('_wrapper', [
-                    'class' => 'gsap-animation ' . ($settings['gsap_animation_type'] ?? ''),
-                    'data-gsap-type' => $settings['gsap_animation_type'] ?? '',
-                    'data-settings' => wp_json_encode($animation_data)
-                ]);
-            }
-            
-            // Enqueue scripts
-            wp_enqueue_script('plg-gsap-animations-frontend');
-            wp_enqueue_style('plg-gsap-animations-frontend');
-        }
-    } 
-    */   
     
     public function before_container_render($element) {
         $settings = $element->get_settings();
-        // $widgetName = $element->get_name();
-        // echo "<pre>"; print_r($widgetName); echo "</pre>";
         
         if ('yes' === $settings['gsap_animation_enable']) {
             // Add only the necessary classes
@@ -234,9 +186,6 @@ final class Elementor_Gsap_Animations {
                 'data-gsap-type' => $settings['gsap_animation_type'] ?? ''
             ]);
             
-            // Enqueue scripts
-            // wp_enqueue_script('gsap');
-            // wp_enqueue_script('scroll-trigger');
             wp_enqueue_script('plg-gsap-animations-frontend');
             wp_enqueue_style('plg-gsap-animations-frontend');
         }
