@@ -52,11 +52,19 @@
         },        
 
         initGsapSectionTitles: function($scope) {
-            // Onle for text-appear animation we have set the trigger event to "elementor-widget-container"
-            const titles = $scope.find(".gsap-text-appear .elementor-widget-container");
+            // Onle for text-appear animation we have set the trigger event to "elementor-widget-container" and if element category is "rivor-element"
+            const titles = $scope.find(".gsap-text-appear");
             
             titles.each(function() {
-                const title = $(this);
+                const targetElement = $(this);
+                let title = targetElement.find(".rivor-element");
+                // Fallback to widget container if rivor-element not found
+                if (!title.length) {
+                    title = targetElement.find(".elementor-widget-container");
+                }
+
+                if (!title.length) return;
+
                 let animationDuration = 0.7;
                 let animationDelay = 0;
                 let staggerAmount = 0.02;
@@ -153,14 +161,15 @@
                     animationDuration = wrapperSettings.gsap_animation_duration;
                     animationDelay = wrapperSettings.gsap_animation_delay;
                 }
+				
+				gsap.set(wrapper, {
+					opacity: 0,
+					y: 95,
+					rotation: 2,
+					filter: "blur(10px)"
+				});
 
-                gsap.fromTo(wrapper, 
-                    {
-                        opacity: 0,
-                        y: 95,
-                        rotation: 2,
-                        filter: "blur(10px)"
-                    },
+                gsap.to(wrapper, 
                     {
                         opacity: 1,
                         y: 0,

@@ -28,4 +28,5 @@
 
 .gsap-reveal-me {
     overflow: hidden;
+    opacity: 0;
 }

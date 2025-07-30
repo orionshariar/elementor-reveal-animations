@@ -119,7 +119,6 @@ final class Elementor_Gsap_Animations {
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'return_value' => 'yes',
                 'default' => '',
-                'frontend_available' => true,
             ]
         );
 
@@ -137,7 +136,6 @@ final class Elementor_Gsap_Animations {
                 'condition' => [
                     'gsap_animation_enable' => 'yes',
                 ],
-                'frontend_available' => true,
             ]
         );
 
@@ -153,7 +151,6 @@ final class Elementor_Gsap_Animations {
                 'condition' => [
                     'gsap_animation_enable' => 'yes',
                 ],
-                'frontend_available' => true,
             ]
         );
 
@@ -169,7 +166,6 @@ final class Elementor_Gsap_Animations {
                 'condition' => [
                     'gsap_animation_enable' => 'yes',
                 ],
-                'frontend_available' => true,
             ]
         );        
 
@@ -180,10 +176,27 @@ final class Elementor_Gsap_Animations {
         $settings = $element->get_settings();
         
         if ('yes' === $settings['gsap_animation_enable']) {
-            // Add only the necessary classes
+            $category = '';
+            
+            if ($element instanceof \Elementor\Widget_Base) {
+                $widget_name = $element->get_name();
+                $widget_manager = \Elementor\Plugin::instance()->widgets_manager;
+                $widget_type = $widget_manager->get_widget_types($widget_name);
+                $category = $widget_type->get_categories()[0] ?? 'general';
+            } elseif ($element instanceof \Elementor\Container_Base) {
+                $category = 'container';
+            } else {
+                $category = 'element';
+            }
+
             $element->add_render_attribute('_wrapper', [
-                'class' => 'gsap-animation '.$settings['gsap_animation_type'],
-                'data-gsap-type' => $settings['gsap_animation_type'] ?? ''
+                'class' => ['gsap-animation', $settings['gsap_animation_type']],
+                'data-settings' => wp_json_encode([
+                    'type' => $settings['gsap_animation_type'],
+                    'duration' => $settings['gsap_animation_duration'],
+                    'delay' => $settings['gsap_animation_delay'],
+                    'category' => $category,
+                ])
             ]);
             
             wp_enqueue_script('plg-gsap-animations-frontend');
