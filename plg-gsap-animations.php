@@ -107,7 +107,7 @@ final class Elementor_Gsap_Animations {
         $element->start_controls_section(
             'gsap_animation_section',
             [
-                'label' => __('Gsap Animation', 'plg-gsap-animations'),
+                'label' => esc_html__('Gsap Animation', 'plg-gsap-animations'),
                 'tab' => \Elementor\Controls_Manager::TAB_ADVANCED,
             ]
         );
@@ -115,7 +115,7 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_enable',
             [
-                'label' => __('Enable Gsap Animation', 'plg-gsap-animations'),
+                'label' => esc_html__('Enable Gsap Animation', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'return_value' => 'yes',
                 'default' => '',
@@ -125,13 +125,13 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_type',
             [
-                'label' => __('Animation Type', 'plg-gsap-animations'),
+                'label' => esc_html__('Animation Type', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '',
                 'options' => [
-                    'gsap-reveal-me' => __('Reveal Me', 'plg-gsap-animations'),
-                    'gsap-reveal-text' => __('Reveal Text', 'plg-gsap-animations'),
-                    'gsap-text-appear' => __('Text Appear', 'plg-gsap-animations'),
+                    'gsap-reveal-me' => esc_html__('Reveal Me', 'plg-gsap-animations'),
+                    'gsap-reveal-text' => esc_html__('Reveal Text', 'plg-gsap-animations'),
+                    'gsap-text-appear' => esc_html__('Text Appear', 'plg-gsap-animations'),
                 ],
                 'condition' => [
                     'gsap_animation_enable' => 'yes',
@@ -142,7 +142,7 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_duration',
             [
-                'label' => __('Duration (s)', 'plg-gsap-animations'),
+                'label' => esc_html__('Duration (s)', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 0.9,
                 'min' => 0.1,
@@ -157,7 +157,7 @@ final class Elementor_Gsap_Animations {
         $element->add_control(
             'gsap_animation_delay',
             [
-                'label' => __('Delay (s)', 'plg-gsap-animations'),
+                'label' => esc_html__('Delay (s)', 'plg-gsap-animations'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 0,
                 'min' => 0,

@@ -15,11 +15,11 @@ class Elementor_Gsap_Animation_Control extends \Elementor\Base_Control {
 
     protected function get_default_settings() {
         return [
-            'label' => __('Gsap Animation', 'plg-gsap-animations'),
+            'label' => esc_html__('Gsap Animation', 'plg-gsap-animations'),
             'options' => [
-                'gsap-reveal-me' => __('Reveal Me', 'plg-gsap-animations'),
-                'gsap-reveal-text' => __('Reveal Text', 'plg-gsap-animations'),
-                'gsap-text-appear' => __('Text Appear', 'plg-gsap-animations'),
+                'gsap-reveal-me' => esc_html__('Reveal Me', 'plg-gsap-animations'),
+                'gsap-reveal-text' => esc_html__('Reveal Text', 'plg-gsap-animations'),
+                'gsap-text-appear' => esc_html__('Text Appear', 'plg-gsap-animations'),
             ],
             'separator' => 'before',
         ];
